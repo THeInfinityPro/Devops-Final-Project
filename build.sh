@@ -19,3 +19,5 @@ docker tag $IMAGE_NAME $PROD_REPO
 else
 $BRANCH not found
 
+fi
+
