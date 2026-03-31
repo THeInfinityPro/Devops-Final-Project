@@ -10,10 +10,10 @@ PROD_REPO="jagadishhak/prod:$BRANCH"
 
 docker build -t $IMAGE_NAME .
 
-if ["$BRANCH" == "dev"]; then
+if [ "$BRANCH" == "dev" ]; then
 docker tag $IMAGE_NAME $DEV_REPO
 
-elif ["$BRANCH" == "main"]; then
+elif [ "$BRANCH" == "main" ]; then
 docker tag $IMAGE_NAME $PROD_REPO
 
 else
