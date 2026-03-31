@@ -1,7 +1,21 @@
 #!/bin/bash
 
-sudo docker build -t project3 .
+set -e #If any cmd fails means script will stops
 
-sudo docker tag project3 jagadishhak/project3:latest
+BRANCH=${1:-dev} #dev branch will use default if there is No mention branch
 
-sudo docker push jagadishhak/project3:latest
+IMAGE_NAME="final-project"
+DEV_REPO="jagadishhak/dev:$BRANCH"
+PROD_REPO="jagadishhak/prod:$BRANCH"
+
+docker build -t $IMAGE_NAME .
+
+if ["$BRANCH" == "dev"]; then
+docker tag $IMAGE_NAME $DEV_REPO
+
+elif ["$BRANCH" == "main"]; then
+docker tag $IMAGE_NAME $PROD_REPO
+
+else
+$BRANCH not found
+
