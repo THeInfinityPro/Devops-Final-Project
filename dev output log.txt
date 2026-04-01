@@ -1,0 +1,158 @@
+Started by user infinity
+Connecting to https://api.github.com using THeInfinityPro/******
+Obtained Jenkinsfile from 9e4170b778e97b22e93647b0a2a1fe8502617e1f
+[Pipeline] Start of Pipeline
+[Pipeline] node
+Running on Jenkins in /var/lib/jenkins/workspace/final-project_dev
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (Declarative: Checkout SCM)
+[Pipeline] checkout
+The recommended git tool is: NONE
+using credential github-creds
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/final-project_dev/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/THeInfinityPro/Devops-Final-Project.git # timeout=10
+Fetching without tags
+Fetching upstream changes from https://github.com/THeInfinityPro/Devops-Final-Project.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+using GIT_ASKPASS to set credentials 
+ > git fetch --no-tags --force --progress -- https://github.com/THeInfinityPro/Devops-Final-Project.git +refs/heads/dev:refs/remotes/origin/dev # timeout=10
+Checking out Revision 9e4170b778e97b22e93647b0a2a1fe8502617e1f (dev)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 9e4170b778e97b22e93647b0a2a1fe8502617e1f # timeout=10
+Commit message: "compose file changed"
+ > git rev-list --no-walk 9e4170b778e97b22e93647b0a2a1fe8502617e1f # timeout=10
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] withEnv
+[Pipeline] {
+[Pipeline] stage
+[Pipeline] { (checkout)
+[Pipeline] git
+The recommended git tool is: NONE
+using credential github-creds
+ > git rev-parse --resolve-git-dir /var/lib/jenkins/workspace/final-project_dev/.git # timeout=10
+Fetching changes from the remote Git repository
+ > git config remote.origin.url https://github.com/THeInfinityPro/Devops-Final-Project.git # timeout=10
+Fetching upstream changes from https://github.com/THeInfinityPro/Devops-Final-Project.git
+ > git --version # timeout=10
+ > git --version # 'git version 2.43.0'
+using GIT_ASKPASS to set credentials 
+ > git fetch --tags --force --progress -- https://github.com/THeInfinityPro/Devops-Final-Project.git +refs/heads/*:refs/remotes/origin/* # timeout=10
+ > git rev-parse refs/remotes/origin/dev^{commit} # timeout=10
+Checking out Revision 9e4170b778e97b22e93647b0a2a1fe8502617e1f (refs/remotes/origin/dev)
+ > git config core.sparsecheckout # timeout=10
+ > git checkout -f 9e4170b778e97b22e93647b0a2a1fe8502617e1f # timeout=10
+ > git branch -a -v --no-abbrev # timeout=10
+ > git branch -D dev # timeout=10
+ > git checkout -b dev 9e4170b778e97b22e93647b0a2a1fe8502617e1f # timeout=10
+Commit message: "compose file changed"
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (build the image)
+[Pipeline] sh
++ chmod +x build.sh
+[Pipeline] sh
++ ./build.sh
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+
+Sending build context to Docker daemon  3.662MB
+Step 1/5 : FROM nginx:alpine
+ ---> d5030d429039
+Step 2/5 : RUN rm -rf /usr/share/nginx/html/*
+ ---> Using cache
+ ---> 627bbad0e8d9
+Step 3/5 : COPY build/ /usr/share/nginx/html/
+ ---> Using cache
+ ---> b3f32ad548b2
+Step 4/5 : EXPOSE 80
+ ---> Using cache
+ ---> be6a2e71a529
+Step 5/5 : CMD ["nginx", "-g", "daemon off;"]
+ ---> Using cache
+ ---> 695e032ad470
+Successfully built 695e032ad470
+Successfully tagged final-project:latest
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (pushing to dockerhub)
+[Pipeline] script
+[Pipeline] {
+[Pipeline] withCredentials
+Masking supported pattern matches of $DOCKER_PASS
+[Pipeline] {
+[Pipeline] sh
+Warning: A secret was passed to "sh" using Groovy String interpolation, which is insecure.
+		 Affected argument(s) used the following variable(s): [DOCKER_PASS]
+		 See https://jenkins.io/redirect/groovy-string-interpolation for details.
++ docker login -u jagadishhak --password-stdin
++ echo ****
+Login Succeeded
+[Pipeline] sh
++ docker tag final-project jagadishhak/dev:latest
+[Pipeline] sh
++ docker push jagadishhak/dev:latest
+The push refers to repository [docker.io/jagadishhak/dev]
+b06be94efe5f: Preparing
+b64576ec99c6: Preparing
+6d895dca2a49: Preparing
+e8abceee8fd8: Preparing
+1eb65b5fb2a1: Preparing
+cff742fa7408: Preparing
+9ffd725bd2f3: Preparing
+8ca391b8823c: Preparing
+27fc2bd29afd: Preparing
+989e799e6349: Preparing
+8ca391b8823c: Waiting
+27fc2bd29afd: Waiting
+989e799e6349: Waiting
+cff742fa7408: Waiting
+9ffd725bd2f3: Waiting
+b06be94efe5f: Layer already exists
+1eb65b5fb2a1: Layer already exists
+e8abceee8fd8: Layer already exists
+b64576ec99c6: Layer already exists
+6d895dca2a49: Layer already exists
+8ca391b8823c: Layer already exists
+9ffd725bd2f3: Layer already exists
+27fc2bd29afd: Layer already exists
+cff742fa7408: Layer already exists
+989e799e6349: Layer already exists
+latest: digest: sha256:9fe2e850298c81168afb43463f8e47c0b4843ea6ba892ad0ab00a34b362780ee size: 2406
+[Pipeline] }
+[Pipeline] // withCredentials
+[Pipeline] }
+[Pipeline] // script
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] stage
+[Pipeline] { (deploying the project)
+[Pipeline] sh
++ chmod +x deploy.sh
+[Pipeline] sh
++ ./deploy.sh
+Removing network final-project_dev_default
+Creating network "final-project_dev_default" with the default driver
+Creating final-project_dev_web_1 ... 
+Creating final-project_dev_web_1 ... done
+[Pipeline] }
+[Pipeline] // stage
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // withEnv
+[Pipeline] }
+[Pipeline] // node
+[Pipeline] End of Pipeline
+
+GitHub has been notified of this commit’s build result
+
+Finished: SUCCESS
