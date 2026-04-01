@@ -204,7 +204,7 @@ http://54.224.191.182:9000 (dev)
 * DockerHub authentication error
 * Port 80 already in use
 * Missing build folder in Docker image
-* Prometheus metrics confusion
+* Security Group issue
 * Monitoring setup issues
 
 ---
